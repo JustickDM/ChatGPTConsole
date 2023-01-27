@@ -52,14 +52,11 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
 			new CompletionRequest(
 				messageText,
 				Model.DavinciText,
-				max_tokens: 150,
+				max_tokens: 4000,
 				temperature: 0.9,
 				top_p: 1,
 				presencePenalty: 0.6,
 				frequencyPenalty: 0));
-		var lastIndex = text.LastIndexOf("\n");
-
-		text = text.Remove(0, lastIndex + 1);
 	}
 
 	Console.WriteLine($"Answer: '{text}'. message in chat {chatId}.");
