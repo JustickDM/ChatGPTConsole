@@ -43,7 +43,7 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
 	var text = string.Empty;
 
 	if (messageText.Equals("/start"))
-		text = "Ну что, погнали, епта!";
+		text = "Привет:)";
 	else
 	{
 		var api = new OpenAIAPI(APIAuthentication.LoadFromEnv());
@@ -57,6 +57,9 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
 				top_p: 1,
 				presencePenalty: 0.6,
 				frequencyPenalty: 0));
+		var lastIndex = text.LastIndexOf("\n");
+
+		text = text.Remove(0, lastIndex + 1);
 	}
 
 	Console.WriteLine($"Answer: '{text}'. message in chat {chatId}.");
