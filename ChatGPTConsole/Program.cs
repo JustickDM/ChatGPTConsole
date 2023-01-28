@@ -48,15 +48,22 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
 	{
 		var api = new OpenAIAPI(APIAuthentication.LoadFromEnv());
 
-		text = await api.Completions.CreateAndFormatCompletion(
-			new CompletionRequest(
-				messageText,
-				Model.DavinciText,
-				max_tokens: 4000,
-				temperature: 0.9,
-				top_p: 1,
-				presencePenalty: 0.6,
-				frequencyPenalty: 0));
+		try
+		{
+			text = await api.Completions.CreateAndFormatCompletion(
+				new CompletionRequest(
+					messageText,
+					Model.DavinciText,
+					max_tokens: 1000,
+					temperature: 0.9,
+					top_p: 1,
+					presencePenalty: 0.6,
+					frequencyPenalty: 0));
+		}
+		catch
+		{
+			text = "Ошибка при генерации ответа:(";
+		}
 	}
 
 	Console.WriteLine($"Answer: '{text}'. message in chat {chatId}.");
@@ -65,6 +72,7 @@ async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, Cancel
 		chatId: chatId,
 		text,
 		replyToMessageId: update.Message.MessageId,
+		allowSendingWithoutReply: true,
 		cancellationToken: cancellationToken);
 }
 
